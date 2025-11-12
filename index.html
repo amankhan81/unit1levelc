@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 5 Vocabulary with Illustrations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        .vocab-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .vocab-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+        .play-btn {
+            background-color: #4f46e5;
+            color: white;
+            transition: background-color 0.15s;
+        }
+        .play-btn:hover {
+            background-color: #4338ca;
+        }
+        .audio-player {
+            display: none;
+        }
+        /* Ensure emojis/icons scale nicely */
+        .vocab-icon {
+            font-size: 1.75rem; /* 28px */
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-8 p-4 bg-white rounded-xl shadow-lg">
+            <h1 class="text-4xl font-extrabold text-indigo-800 tracking-tight">Unit 5 Vocabulary with Visuals (Grade 8)</h1>
+            <p class="text-lg text-gray-600 mt-2">Click the play button to hear the pronunciation. The icon is your visual aid!</p>
+        </header>
+
+        <main class="grid gap-6" id="vocabulary-list">
+            <!-- Vocabulary Cards will be inserted here by JavaScript -->
+        </main>
+
+    </div>
+
+    <script>
+        const vocabularyData = [
+            { word: "ADDENDUM", meaning: "A thing that is added; an appendix or supplement to a book or written document.", synonyms: "rider, appendix, supplement, attachment.", antonyms: "deletion, subtraction, removal.", example: "The teacher included an ADDENDUM to the syllabus with updated due dates." },
+            { word: "AGHAST", meaning: "Filled with amazement, disgust, fear, or terror.", synonyms: "shocked, horrified, stupefied, thunderstruck.", antonyms: "delighted, overjoyed, unscared.", example: "We were AGHAST at the shocking conditions revealed in the report." },
+            { word: "AMPLE", meaning: "More than enough, large, spacious.", synonyms: "sufficient, abundant, considerable, adequate.", antonyms: "insufficient, inadequate, scant, meager.", example: "The old house had AMPLE room for the entire extended family." },
+            { word: "APPARITION", meaning: "A ghost or ghostly figure; an unexplained or unusual appearance.", synonyms: "phantom, specter, ghost, spirit, vision.", antonyms: "reality, substance, corporeality.", example: "The sudden APPARITION of fog made the ships difficult to see." },
+            { word: "ASSERT", meaning: "To declare or state as truth, maintain or defend, put forward forcefully.", synonyms: "affirm, avow, proclaim, state clearly.", antonyms: "deny, repudiate, retract, whisper.", example: "She stepped forward to ASSERT her rights in the meeting." },
+            { word: "COWER", meaning: "To cringe or shrink away in fear or shame.", synonyms: "cringe, flinch, quail, recoil.", antonyms: "stand up to, face, confront.", example: "The frightened dog began to COWER during the thunderstorm." },
+            { word: "DISDAIN", meaning: "To look upon with scorn; to refuse scornfully; (n.) a feeling of contempt.", synonyms: "spurn, reject, scorn, contempt, derision.", antonyms: "revere, venerate, respect, admire.", example: "They treated the beggars with open DISDAIN, refusing to even look at them." },
+            { word: "EPITAPH", meaning: "A brief statement written on a tomb or gravestone.", synonyms: "tombstone inscription, commemorative text.", antonyms: "birth record, biography.", example: "The simple EPITAPH read, 'A life well-lived, a rest well-earned.'", color: "green" },
+            { word: "ETHICAL", meaning: "Having to do with morals, values, right and wrong; in accordance with standards of right conduct.", synonyms: "moral, virtuous, upright, principled.", antonyms: "immoral, dishonest, unscrupulous, unethical.", example: "The company was praised for its ETHICAL business practices." },
+            { word: "FACETIOUS", meaning: "Humorous, not meant seriously.", synonyms: "joking, witty, waggish, comical.", antonyms: "serious, grave, solemn, humorless.", example: "His FACETIOUS remarks during the meeting were not appreciated by the board." },
+            { word: "INAUDIBLE", meaning: "Not able to be heard.", synonyms: "faint, muffled, hushed, whispered.", antonyms: "audible, easily heard, deafening.", example: "The sound was so faint it was practically INAUDIBLE." },
+            { word: "INDISCRIMINATE", meaning: "Without restraint or control; unselective.", synonyms: "random, haphazard, careless, unselective.", antonyms: "selective, discriminating, judicious, planned.", example: "The INDISCRIMINATE bombing caused collateral damage to civilian areas." },
+            { word: "INTRIGUE", meaning: "To arouse the curiosity or interest of, to fascinate; (n.) secret plotting.", synonyms: "scheme, plot, conspiracy, fascinate, puzzle.", antonyms: "bore, repel, alienate, honesty.", example: "The mysterious letter served only to INTRIGUE the detective." },
+            { word: "JURISDICTION", meaning: "An area of authority or control; the right to administer justice.", synonyms: "purview, domain, sphere, authority, control.", antonyms: "incompetence, powerlessness.", example: "The case fell outside the local court's JURISDICTION." },
+            { word: "PLAUSIBLE", meaning: "Appearing true, reasonable, or fair.", synonyms: "believable, probable, credible, likely.", antonyms: "improbable, unbelievable, unlikely, far-fetched.", example: "The witness provided a PLAUSIBLE account of the accident." },
+            { word: "PLEBEIAN", meaning: "Common, vulgar; belonging to the lower class; (n.) a common person, member of the lower class.", synonyms: "commonplace, lowborn, vulgar, unrefined.", antonyms: "aristocratic, refined, polished, royal.", example: "He preferred simple, PLEBEIAN meals over gourmet dining." },
+            { word: "PRODIGAL", meaning: "Wastefully extravagant; lavishly or generously abundant; (n.) one who is wasteful and self-indulgent.", synonyms: "spendthrift, improvident, lavish, wasteful.", antonyms: "frugal, economical, stingy, miserly.", example: "The PRODIGAL son quickly spent his inheritance on trivial things." },
+            { word: "PROXIMITY", meaning: "Nearness, closeness, absence of distance.", synonyms: "nearness, closeness, adjacency.", antonyms: "distance, remoteness, separation.", example: "The close PROXIMITY of the two buildings made them difficult to photograph." },
+            { word: "PULVERIZE", meaning: "To grind or pound to a powder or dust; to destroy or overcome (as if by smashing into fragments).", synonyms: "crush, demolish, grind, smash.", antonyms: "cement, reinforce, rebuild, preserve.", example: "The demolition crew used explosives to PULVERIZE the old factory." },
+            { word: "VOLATILE", meaning: "Highly changeable, fickle; tending to become violent or explosive; changing readily from the liquid to the gaseous state.", synonyms: "unstable, erratic, explosive, unpredictable.", antonyms: "stable, steady, predictable, constant.", example: "The political situation in the region remained highly VOLATILE." },
+        ];
+        
+        // Function to map each word to a visual emoji/icon
+        function getIconForWord(word) {
+            switch(word) {
+                case "ADDENDUM": return "➕"; // Add
+                case "AGHAST": return "😱"; // Shocked
+                case "AMPLE": return "📦"; // Plenty/Large package
+                case "APPARITION": return "👻"; // Ghost
+                case "ASSERT": return "🗣️"; // Speaking forcefully
+                case "COWER": return "😬"; // Cringing/grimacing
+                case "DISDAIN": return "😒"; // Unamused/scorn
+                case "EPITAPH": return "🪦"; // Gravestone
+                case "ETHICAL": return "⚖️"; // Justice/Balance
+                case "FACETIOUS": return "😂"; // Joking/Laughing
+                case "INAUDIBLE": return "🤫"; // Shushing/Quiet
+                case "INDISCRIMINATE": return "🎯❌"; // Target Missed/Unselective
+                case "INTRIGUE": return "🔎"; // Investigation/Mystery
+                case "JURISDICTION": return "🏛️"; // Court/Authority
+                case "PLAUSIBLE": return "👍"; // Believable/Thumbs up
+                case "PLEBEIAN": return "🧑‍🌾"; // Common person/Farmer
+                case "PRODIGAL": return "💸"; // Wasteful money
+                case "PROXIMITY": return "🤝"; // Handshake/Close
+                case "PULVERIZE": return "🔨"; // Smash/Hammer
+                case "VOLATILE": return "💥"; // Explosion/Unstable
+                default: return "💡";
+            }
+        }
+        
+        function playStaticAudio(word) {
+            const audioId = `audio-${word.toLowerCase()}`;
+            const audio = document.getElementById(audioId);
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+                audio.play();
+            } else {
+                alertUser(`Audio file for "${word.toUpperCase()}.mp3" not found. Please ensure the file is in the same directory.`);
+            }
+        }
+        
+        function alertUser(message) {
+            const existingAlert = document.getElementById('custom-alert');
+            if (existingAlert) existingAlert.remove();
+
+            const alertDiv = document.createElement('div');
+            alertDiv.id = 'custom-alert';
+            alertDiv.className = 'fixed top-4 right-4 bg-red-600 text-white p-4 rounded-lg shadow-xl z-50 transition-opacity duration-300';
+            alertDiv.textContent = message;
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.style.opacity = '0';
+                setTimeout(() => alertDiv.remove(), 300);
+            }, 5000);
+        }
+
+        function renderVocabulary() {
+            const container = document.getElementById('vocabulary-list');
+            
+            // Color mapping for aesthetic cycling
+            const colorClassMap = {
+                "red": "border-red-500", "blue": "border-blue-500", "green": "border-green-500", 
+                "purple": "border-purple-500", "orange": "border-orange-500"
+            };
+            const titleColorClassMap = {
+                "red": "text-red-700", "blue": "text-blue-700", "green": "text-green-700", 
+                "purple": "text-purple-700", "orange": "text-orange-700"
+            };
+            // Highlight color is RED as requested for the example sentence
+            const highlightColor = "text-red-600";
+            
+            const colorCycle = ['red', 'blue', 'green', 'purple', 'orange'];
+
+
+            container.innerHTML = vocabularyData.map((item, index) => {
+                
+                const itemColor = colorCycle[index % colorCycle.length];
+                
+                const colorClass = `border-l-4 ${colorClassMap[itemColor] || 'border-gray-500'}`;
+                const titleColorClass = titleColorClassMap[itemColor] || 'text-gray-700';
+
+                const wordLower = item.word.toLowerCase();
+                const audioPath = `${wordLower}.mp3`;
+                
+                // 1. Highlight the entry word in the example sentence (ALWAYS RED)
+                const exampleRegex = new RegExp(`\\b${item.word}\\b`, 'gi');
+                const highlightedExample = item.example.replace(exampleRegex, 
+                    `<span class="font-bold ${highlightColor}">$&</span>`
+                );
+                
+                const icon = getIconForWord(item.word);
+
+
+                return `
+                    <div class="vocab-card bg-white p-6 rounded-xl ${colorClass}">
+                        <div class="flex justify-between items-start mb-3">
+                            <!-- Word and Icon -->
+                            <div class="flex items-center space-x-3">
+                                <h2 class="text-2xl font-bold ${titleColorClass}">
+                                    ${index + 1}. ${item.word}
+                                </h2>
+                                <span class="vocab-icon" title="Illustration for ${item.word}">${icon}</span>
+                            </div>
+
+                            <!-- Play button -->
+                            <button 
+                                class="play-btn p-3 rounded-full flex-shrink-0 flex items-center justify-center text-sm font-semibold shadow-md hover:shadow-lg"
+                                onclick="playStaticAudio('${item.word}')"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7 6v12l10-6z" />
+                                </svg>
+                            </button>
+                            <!-- Hidden Audio Element -->
+                            <audio id="audio-${wordLower}" class="audio-player">
+                                <source src="${audioPath}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        
+                        <!-- 1. Meaning -->
+                        <p class="mt-1 text-gray-800"><span class="font-semibold">Meaning:</span> ${item.meaning}</p>
+                        
+                        <!-- 2. Example (Now in black text with red highlight) -->
+                        <p class="mt-3 text-base italic text-gray-700">
+                           <span class="font-semibold not-italic">Example:</span> ${highlightedExample}
+                        </p>
+                        
+                        <!-- 3. Synonyms (Moved after Example) -->
+                        <p class="mt-3 text-sm text-green-700"><span class="font-semibold">Synonyms:</span> ${item.synonyms}</p>
+
+                        <!-- 4. Antonyms (Moved after Synonyms) -->
+                        <p class="mt-1 text-sm text-yellow-700"><span class="font-semibold">Antonyms:</span> ${item.antonyms}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Initialize on load
+        window.onload = renderVocabulary;
+    </script>
+</body>
+</html>
